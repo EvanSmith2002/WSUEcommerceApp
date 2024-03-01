@@ -4,5 +4,5 @@
 npm start
 
 # Run frontend
-cd store/src
+cd store/src  
 npm start
