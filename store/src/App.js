@@ -8,6 +8,8 @@ import Cancel from './pages/Cancel';
 import Store from './pages/Store';
 import Success from './pages/Success';
 import CartProvider from './CartContext';
+import Admin from "./pages/Admin"
+import Seller from './pages/Seller';
 
 // localhost:3000 -> Home
 // localhost:3000/success -> Success
@@ -19,7 +21,9 @@ function App() {
         <NavbarComponent></NavbarComponent>
         <BrowserRouter>
           <Routes>
-            <Route index element={<Store />} />
+            <Route index element={<Admin />} />
+            <Route path="store" element={<Store />} />
+            <Route path="seller" element={<Seller />} />
             <Route path="success" element={<Success />} />
             <Route path="cancel" element={<Cancel />} />
           </Routes>

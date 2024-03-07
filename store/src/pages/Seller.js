@@ -1,8 +1,10 @@
 import {Row,Col} from 'react-bootstrap'
 import { productsArray } from '../productStore';
 import ProductCard from '../components/ProductCard';
+import EmptyProductCard from '../components/EmptyProduct';
 
-function Store(){
+
+function Seller(){
     
     return(
         <>
@@ -16,7 +18,8 @@ function Store(){
             ))}
             
         </Row>
+        <EmptyProductCard/>
         </>
     )
 }
-export default Store;
+export default Seller;
