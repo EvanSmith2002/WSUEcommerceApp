@@ -1,4 +1,4 @@
-import { Button, Container, Form, Col, Row } from 'react-bootstrap';
+import { Button, Container, Form, Col, Row, FormGroup } from 'react-bootstrap';
 import { useState } from 'react';
 
 function SignUpPage() {
@@ -21,7 +21,7 @@ function SignUpPage() {
 
     <Container className="d-flex justify-content-center vh-100">
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicName">
+        <Form.Group controlId="formBasicName" className='m-4'>
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -31,7 +31,7 @@ function SignUpPage() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group controlId="formBasicEmail" className='m-4'>
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -41,7 +41,7 @@ function SignUpPage() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group controlId="formBasicPassword" className='m-4'>
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -50,7 +50,8 @@ function SignUpPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+
+        <Button variant="primary" type="submit" className='m-4'>
           Sign Up
         </Button>
       </Form>
