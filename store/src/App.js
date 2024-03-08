@@ -18,11 +18,11 @@ function App() {
   return (
     <CartProvider>
       <Container>
-        <NavbarComponent></NavbarComponent>
         <BrowserRouter>
+          <NavbarComponent/>
           <Routes>
-            <Route index element={<Admin />} />
-            <Route path="store" element={<Store />} />
+            <Route index element={<Store />} />
+            <Route path="admin" element={<Admin />} />
             <Route path="seller" element={<Seller />} />
             <Route path="success" element={<Success />} />
             <Route path="cancel" element={<Cancel />} />

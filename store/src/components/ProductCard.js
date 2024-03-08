@@ -1,18 +1,22 @@
 import { Image, Card, Button, Form, Row, Col } from 'react-bootstrap';
 import { CartContext } from '../CartContext';
 import { useContext } from 'react';
+import { useLocation } from 'react-router-dom'; 
+
 
 function ProductCard(props) { // props.product is the product we are selling
     const product = props.product;
     const cart = useContext(CartContext);
     const productQuantity = cart.getProductQuantity(product.id);
+    const location = useLocation();
+
 
     return (
         <Card style={{ flex:1, backgroundColor:'honeydew'}}>
             <Card.Body>
                 <Card.Title>{product.title}</Card.Title>
-                <Card.Body><img src ={product.link}></img></Card.Body>
-                <Card.Text>${product.price}</Card.Text>
+                <Card.Body><img className = "img-thumbnail" src ={product.link}></img></Card.Body>
+                <Card.Text>${product.price}</Card.Text>                    
                 { productQuantity > 0 ?
                     <>
                         <Form as={Row}>
@@ -24,9 +28,13 @@ function ProductCard(props) { // props.product is the product we are selling
                         </Form>
                         <Button variant="danger" onClick={() => cart.deleteFromCart(product.id)} className="my-2">Remove from cart</Button>
                     </>
-                    :
-                    <Button variant="primary" onClick={() => cart.addOneToCart(product.id)}>Add To Cart</Button>
-                }
+                    :(
+                        location.pathname !== '/seller' && ( // Only render button if not on /seller path
+                          <Button variant="primary" onClick={() => cart.addOneToCart(product.id)}>
+                            Add To Cart
+                          </Button>
+                        )
+                      )}
             </Card.Body>
         </Card>
     )

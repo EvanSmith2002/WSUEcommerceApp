@@ -43,6 +43,10 @@ function EmptyProductCard() {
                 <Form.Control type="number" min="0.01" step="0.01" placeholder="Enter price (e.g., 19.99)" />
               </Col>
             </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label>Select Image</Form.Label>
+              <Form.Control type="file" />
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>

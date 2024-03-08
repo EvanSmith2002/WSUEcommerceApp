@@ -1,10 +1,13 @@
-import { Button, Container, Navbar, Modal} from 'react-bootstrap';
+import { Button, Form, FormControl, Container, Navbar, Modal} from 'react-bootstrap';
 import { useState, useContext } from 'react';
 import {CartContext} from "../CartContext";
 import CartProduct from './CartProduct';
+import { useLocation } from 'react-router-dom'; 
 
 function NavbarComponent() {
     const cart = useContext(CartContext);
+    const location = useLocation();
+
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -34,7 +37,10 @@ function NavbarComponent() {
                 <Navbar.Brand href="/" style={{ color: 'honeydew' }}>E-COMMERCE STORE</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                    <Button onClick={handleShow}>Cart ({productsCount} Items)</Button>
+                    {(location.pathname !== '/admin' && location.pathname !== '/seller') && (
+                    <Button className = 'ml-2' onClick={handleShow}>Cart ({productsCount} Items)</Button>
+                    )}
+                    <Button variant="primary" className='m-4'>Log out</Button>
                 </Navbar.Collapse>
             </Navbar>
             <Modal show={show} onHide={handleClose}>
