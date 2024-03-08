@@ -33,16 +33,33 @@ function NavbarComponent() {
 
     return (
         <>
-            <Navbar expand="sm">
-                <Navbar.Brand href="/" style={{ color: 'honeydew' }}>E-COMMERCE STORE</Navbar.Brand>
-                <Navbar.Toggle />
-                <Navbar.Collapse className="justify-content-end">
-                    {(location.pathname !== '/admin' && location.pathname !== '/seller') && (
-                    <Button className = 'ml-2' onClick={handleShow}>Cart ({productsCount} Items)</Button>
-                    )}
-                    <Button variant="primary" className='m-4'>Log out</Button>
-                </Navbar.Collapse>
-            </Navbar>
+      <Navbar expand="sm">
+        <Navbar.Brand href="/" style={{ color: 'honeydew' }}>WSU E-COMMERCE STORE</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          {/* Show Cart button on non-admin, non-seller, non-login, non-signup pages */}
+          {(location.pathname !== '/admin' && location.pathname !== '/seller' && location.pathname !== '/login' && location.pathname !== '/signup') && (
+            <Button className="ml-2" onClick={handleShow}>
+              Cart ({productsCount} Items)
+            </Button>
+          )}
+
+          {/* Show "Sign Up" button only on the login page */}
+          {location.pathname === '/login' && (
+            <Button variant="primary" className="m-4">Sign Up</Button>
+          )}
+
+          {/* Show "Log In" button only on the signup page */}
+          {location.pathname === '/signup' && (
+            <Button variant="primary" className="m-4">Log In</Button>
+          )}
+
+          {/* Show "Log Out" button on all pages except login */}
+          {(location.pathname !== '/login' && location.pathname !== '/signup') && (
+            <Button variant="primary" className="m-4">Log Out</Button>
+          )}
+        </Navbar.Collapse>
+      </Navbar>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Shopping Cart</Modal.Title>

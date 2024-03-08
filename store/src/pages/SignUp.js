@@ -1,25 +1,37 @@
 import { Button, Container, Form, Col, Row } from 'react-bootstrap';
 import { useState } from 'react';
 
-function LoginPage() {
+function SignUpPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle sign in logic here (e.g., call an API to authenticate)
-    console.log(`Email: ${email}, Password: ${password}`);
-    setEmail(''); // Clear form fields after submission
+    // Handle sign up logic here (e.g., call an API to create a new user)
+    console.log(`Name: ${name}, Email: ${email}, Password: ${password}`);
+    setName(''); // Clear form fields after submission
+    setEmail('');
     setPassword('');
   };
 
   return (
     <>
     <h1 align= "center" className='p-3' style={{ color: 'honeydew' }}>Welcome to WSU's E-Commerce store!</h1> 
-    
-    <Container className="d-flex justify-content-center  vh-100">
+
+    <Container className="d-flex justify-content-center vh-100">
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail" className='m-4'>
+        <Form.Group controlId="formBasicName">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -29,7 +41,7 @@ function LoginPage() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword" className='m-4'>
+        <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -38,8 +50,8 @@ function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button className = "m-4" variant="primary" type="submit">
-          Sign In
+        <Button variant="primary" type="submit">
+          Sign Up
         </Button>
       </Form>
     </Container>
@@ -47,4 +59,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignUpPage;
