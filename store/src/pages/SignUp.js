@@ -5,14 +5,21 @@ function SignUpPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true); // Initialise as true
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle sign up logic here (e.g., call an API to create a new user)
-    console.log(`Name: ${name}, Email: ${email}, Password: ${password}`);
-    setName(''); // Clear form fields after submission
-    setEmail('');
-    setPassword('');
+
+    if (password === confirmPassword) {
+      // Handle sign-up logic here (e.g., call an API to create a new user)
+      console.log(`Name: ${name}, Email: ${email}, Password: ${password}`);
+      setName('');
+      setEmail('');
+      setPassword('');
+    } else {
+      setPasswordsMatch(false); // Alert user that passwords don't match
+    }
   };
 
   return (
@@ -41,19 +48,33 @@ function SignUpPage() {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword" className='m-4'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+        <Form.Group className='m-4' controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
 
-        <Button variant="primary" type="submit" className='m-4'>
-          Sign Up
-        </Button>
+          <Form.Group className='m-4' controlId="formConfirmPassword">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              isInvalid={!passwordsMatch}
+            />
+            {!passwordsMatch && (
+              <Form.Control.Feedback className= "color: white" type="invalid">
+                Passwords don't match!
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+
+          <Button className='m-4' variant="primary" type="submit">Sign Up</Button>
       </Form>
     </Container>
     </>
