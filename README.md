@@ -1,6 +1,6 @@
 # WSUEcommerceApp
 
-make sure to run **npm -i** to install necessary node modules!
+make sure to run **npm install** to install necessary node modules!
 
 # Run Server
 npm start
