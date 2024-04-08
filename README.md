@@ -3,6 +3,7 @@
 make sure to run **npm install** to install necessary node modules!
 
 # Run Server
+cd server
 npm start
 
 # Run frontend
