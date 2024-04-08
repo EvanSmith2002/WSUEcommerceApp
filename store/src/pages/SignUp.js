@@ -1,5 +1,11 @@
-import { Button, Container, Form, Col, Row, FormGroup } from 'react-bootstrap';
+import { Button, Container, Form} from 'react-bootstrap';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Axios from 'axios';
+
+
+const SIGNUP_URL = "http://localhost:3000/signup";
+
 
 function SignUpPage() {
   const [name, setName] = useState('');
@@ -7,16 +13,49 @@ function SignUpPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true); // Initialise as true
+  const [role, setRole] = useState('Buyer');
+  const navigateTo = useNavigate();
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (event) => {
+  const createUser = async () => {
+    try {
+      const response = await Axios.post(SIGNUP_URL, {
+        name,
+        email,
+        password,
+        role
+      });
+      
+      if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
+        console.log(response.data.message); //user successfully created, you can perform any additional actions
+        //usersContext.updateUsers();
+        setError(null); //clear any previous errors
+        navigateTo('/login'); //redirect to the homepage
+      } else {
+        console.error("Unexpected status code:", response.status); //handle unexpected status codes
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) { //handle errors here
+        setError("Username already exists");
+      } else {
+        console.error("Error creating user:", error.response ? error.response.data.message : error.message); // Handle other errors
+      }
+    }
+  };
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (password === confirmPassword) {
       // Handle sign-up logic here (e.g., call an API to create a new user)
-      console.log(`Name: ${name}, Email: ${email}, Password: ${password}`);
+      console.log(`Name: ${name}, Email: ${email}, Password: ${password}`, `Role: ${role}`);
+      //await createUser()
       setName('');
       setEmail('');
       setPassword('');
+      setRole('');
+      navigateTo('/login');
     } else {
       setPasswordsMatch(false); // Alert user that passwords don't match
     }
@@ -27,7 +66,7 @@ function SignUpPage() {
     <h1 align= "center" className='p-3' style={{ color: 'honeydew' }}>Welcome to WSU's E-Commerce store!</h1> 
 
     <Container className="d-flex justify-content-center vh-100">
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <Form.Group controlId="formBasicName" className='m-4'>
           <Form.Label>Name</Form.Label>
           <Form.Control
@@ -74,9 +113,21 @@ function SignUpPage() {
             )}
           </Form.Group>
 
-          <Button className='m-4' variant="primary" type="submit">Sign Up</Button>
+          <Form.Group className='m-4' controlId='formRole'>
+            <Form.Label>Role</Form.Label>
+            <Form.Select className="form-select text-center" onChange={(e) => setRole(e.target.value)}>
+              <option value="Buyer">Buyer</option>
+              <option value="Seller">Seller</option>
+              <option value="Admin">Admin</option>
+            </Form.Select>
+          </Form.Group>
+
+
+          <Button className='m-4' variant="primary" onClick={handleSubmit}>Sign Up</Button>
       </Form>
     </Container>
+
+    {error && <p className="text-red-500 mt-2">{error}</p>}
     </>
   );
 }

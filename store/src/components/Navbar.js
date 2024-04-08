@@ -2,7 +2,9 @@ import { Button, Form, FormControl, Container, Navbar, Modal} from 'react-bootst
 import { useState, useContext } from 'react';
 import {CartContext} from "../CartContext";
 import CartProduct from './CartProduct';
-import { useLocation } from 'react-router-dom'; 
+import { useLocation, useNavigate } from 'react-router-dom';
+ 
+
 
 function NavbarComponent() {
     const cart = useContext(CartContext);
@@ -12,6 +14,7 @@ function NavbarComponent() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const navigateTo = useNavigate();
 
     const checkout = async () => {
         await fetch('http://localhost:4000/checkout', {
@@ -46,12 +49,12 @@ function NavbarComponent() {
 
           {/* Show "Sign Up" button only on the login page */}
           {location.pathname === '/login' && (
-            <Button variant="primary" className="m-4">Sign Up</Button>
+            <Button variant="primary" className="m-4" onClick={() => navigateTo('/signup')}>Sign Up</Button>
           )}
 
           {/* Show "Log In" button only on the signup page */}
           {location.pathname === '/signup' && (
-            <Button variant="primary" className="m-4">Log In</Button>
+            <Button variant="primary" className="m-4" onClick={() => navigateTo('/login')}>Log In</Button>
           )}
 
           {/* Show "Log Out" button on all pages except login */}
