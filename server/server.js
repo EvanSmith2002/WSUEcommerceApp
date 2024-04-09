@@ -1,6 +1,7 @@
 const express = require('express');
 var cors = require('cors');
 const buyerRouter = require('./routes/buyer')
+const mongoose = require("mongoose");
 const apiRouter = require('./api/api')
 const {PORT, mongoDBURL} = require("./config")
 
