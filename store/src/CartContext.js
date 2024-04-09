@@ -16,8 +16,8 @@ export function CartProvider({children}) {
     
     // [ { id: 1 , quantity: 3 }, { id: 2, quantity: 1 } ]
 
-    function getProductQuantity(id) {
-        const quantity = cartProducts.find(product => product.id === id)?.quantity;
+    function getProductQuantity(productID) {
+        const quantity = cartProducts.find(product => product.productID === productID)?.quantity;
         
         if (quantity === undefined) {
             return 0;
@@ -26,15 +26,19 @@ export function CartProvider({children}) {
         return quantity;
     }
 
-    function addOneToCart(id) {
-        const quantity = getProductQuantity(id);
+    function addOneToCart(productID) {
+        const quantity = getProductQuantity(productID);
+        
+        const products = productsArray.filter((product) => product.productID === productID)
+        const product = products[0]
 
         if (quantity === 0) { // product is not in cart
             setCartProducts(
                 [
                     ...cartProducts,
                     {
-                        id: id,
+                        productID: productID,
+                        priceID: product.priceID,
                         quantity: 1
                     }
                 ]
@@ -44,24 +48,24 @@ export function CartProvider({children}) {
             setCartProducts(
                 cartProducts.map(
                     product =>
-                    product.id === id                                // if condition
-                    ? { ...product, quantity: product.quantity + 1 } // if statement is true
+                    product.productID === productID                                // if condition
+                    ? { ...product, quantity: quantity + 1 } // if statement is true
                     : product                                        // if statement is false
                 )
             )
         }
     }
 
-    function removeOneFromCart(id) {
-        const quantity = getProductQuantity(id);
+    function removeOneFromCart(productID) {
+        const quantity = getProductQuantity(productID);
 
         if(quantity == 1) {
-            deleteFromCart(id);
+            deleteFromCart(productID);
         } else {
             setCartProducts(
                 cartProducts.map(
                     product =>
-                    product.id === id                                // if condition
+                    product.productID === productID                                // if condition
                     ? { ...product, quantity: product.quantity - 1 } // if statement is true
                     : product                                        // if statement is false
                 )
@@ -69,14 +73,14 @@ export function CartProvider({children}) {
         }
     }
 
-    function deleteFromCart(id) {
+    function deleteFromCart(productID) {
         // [] if an object meets a condition, add the object to array
         // [product1, product2, product3]
         // [product1, product3]
         setCartProducts(
             cartProducts =>
             cartProducts.filter(currentProduct => {
-                return currentProduct.id != id;
+                return currentProduct.productID != productID;
             })  
         )
     }
@@ -84,7 +88,7 @@ export function CartProvider({children}) {
     function getTotalCost() {
         let totalCost = 0;
         cartProducts.map((cartItem) => {
-            const productData = getProductData(cartItem.id);
+            const productData = getProductData(cartItem.productID);
             totalCost += (productData.price * cartItem.quantity);
         });
         return totalCost;

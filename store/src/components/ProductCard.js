@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 function ProductCard(props) { // props.product is the product we are selling
     const product = props.product;
     const cart = useContext(CartContext);
-    const productQuantity = cart.getProductQuantity(product.id);
+    const productQuantity = cart.getProductQuantity(product.productID);
     const location = useLocation();
 
 
@@ -22,15 +22,15 @@ function ProductCard(props) { // props.product is the product we are selling
                         <Form as={Row}>
                             <Form.Label column="true" sm="6">In Cart: {productQuantity}</Form.Label>
                             <Col sm="6">
-                                <Button sm="6" onClick={() => cart.addOneToCart(product.id)} className="mx-2">+</Button>
-                                <Button sm="6" onClick={() => cart.removeOneFromCart(product.id)} className="mx-2">-</Button>
+                                <Button sm="6" onClick={() => cart.addOneToCart(product.productID)} className="mx-2">+</Button>
+                                <Button sm="6" onClick={() => cart.removeOneFromCart(product.productID)} className="mx-2">-</Button>
                             </Col>
                         </Form>
-                        <Button variant="danger" onClick={() => cart.deleteFromCart(product.id)} className="my-2">Remove from cart</Button>
+                        <Button variant="danger" onClick={() => cart.deleteFromCart(product.productID)} className="my-2">Remove from cart</Button>
                     </>
                     :(
                         location.pathname !== '/seller' && ( // Only render button if not on /seller path
-                          <Button variant="primary" onClick={() => cart.addOneToCart(product.id)}>
+                          <Button variant="primary" onClick={() => cart.addOneToCart(product.productID)}>
                             Add To Cart
                           </Button>
                         )
