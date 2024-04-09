@@ -3,6 +3,7 @@ import { productsArray } from '../productStore';
 import ProductCard from '../components/ProductCard';
 import { Form, FormControl, Button } from 'react-bootstrap';
 import { useState } from 'react';
+import Axios from 'axios';
 
 
 function Store(){
@@ -14,6 +15,20 @@ function Store(){
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
+
+    // const addItemTest = (event) => {
+    //   event.preventDefault()
+
+    //   try {
+    //   Axios.delete('http://localhost:4000/api/deleteItem', {
+    //     productID: 'prod_PtGDVzR4eYXoZD'
+    //   });
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+
+    // }
+
     return(
         <>
         <h1 align="center" className="p-3" style={{ color: 'honeydew' }}>
@@ -36,6 +51,8 @@ function Store(){
             </Col>
           ))}
         </Row>
+
+        {/* <Button onClick={addItemTest}>Delete Item</Button> */}
       </>
     );
   }
