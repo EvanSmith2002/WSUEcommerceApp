@@ -1,4 +1,4 @@
-const SECRET_KEY = 'sk_test_51P38GFP79apvj9gn7ok8QcBblRTZkJxeBmRtrCbFdO7VVok5QpQtAdPZ9DvG4PnytfqO8NXbZBBoaRTj3Id62Yo000iUYIKU6B'
+const SECRET_KEY = require('../config').StripeURL;
 const stripe = require('stripe')(SECRET_KEY);
 var express = require('express');
 const router = express.Router()

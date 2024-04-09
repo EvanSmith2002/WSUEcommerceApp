@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose");
 const productSchema = mongoose.Schema({
     id:{
         type:String,
@@ -24,4 +24,6 @@ const productSchema = mongoose.Schema({
 );
 //Mongoose schemas support a timestamps option. If you set timestamps: true, Mongoose will add two properties of type Date to your schema
 
-export const Product = mongoose.model('Product',productSchema);
+const Product = mongoose.model('Product',productSchema);
+
+module.exports=Product;
