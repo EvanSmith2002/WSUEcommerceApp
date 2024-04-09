@@ -4,19 +4,19 @@
 
 const productsArray = [
     {
-        id: "price_1LnUTFDM1jwCEz8OGoOSXiSM",
+        id: "price_1P38ucP79apvj9gnVgWYvHAB",
         title: "Keychain",
         price: 4.99,
         link:"https://images.footballfanatics.com/washington-state-cougars/mens-new-era-crimson-washington-state-cougars-primary-team-logo-basic-59fifty-fitted-hat_pi4181000_altimages_ff_4181294-4d1ca7ff2446ed42b06aalt2_full.jpg?_hv=2&w=600"
     },
     {
-        id: "price_1LnUTxDM1jwCEz8OAqHYTwKQ",
+        id: "10",
         title: "Sunglasses",
         price: 9.99,
         link:"https://images.footballfanatics.com/washington-state-cougars/mens-new-era-crimson-washington-state-cougars-primary-team-logo-basic-59fifty-fitted-hat_pi4181000_altimages_ff_4181294-4d1ca7ff2446ed42b06aalt2_full.jpg?_hv=2&w=600"
     },
     {
-        id: "price_1LnUUoDM1jwCEz8OvxIcJ7to",
+        id: "11",
         title: "Hoodie",
         price: 39.99,
         link:"https://images.footballfanatics.com/washington-state-cougars/mens-new-era-crimson-washington-state-cougars-primary-team-logo-basic-59fifty-fitted-hat_pi4181000_altimages_ff_4181294-4d1ca7ff2446ed42b06aalt2_full.jpg?_hv=2&w=600"

@@ -59,7 +59,7 @@ function NavbarComponent() {
 
           {/* Show "Log Out" button on all pages except login */}
           {(location.pathname !== '/login' && location.pathname !== '/signup') && (
-            <Button variant="primary" className="m-4">Log Out</Button>
+            <Button variant="primary" className="m-4" onClick={() => navigateTo('/login')}>Log Out</Button>
           )}
         </Navbar.Collapse>
       </Navbar>
