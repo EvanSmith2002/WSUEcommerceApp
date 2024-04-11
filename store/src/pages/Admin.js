@@ -6,25 +6,53 @@ function Admin() {
   const [sellRequests, setSellRequests] = useState([]);
 
   useEffect(() => {
-    const fetchSellRequests = async () => {
-      try {
-        const response = await fetch('http://localhost:4000/admin/products');
-        const data = await response.json();
-        setSellRequests(data);
-      } catch (error) {
-        console.error('Error fetching sell requests:', error);
-      }
-    };
-
     fetchSellRequests();
   }, []);
 
-  const handleApproveRequest = (requestId) => {
 
+  const fetchSellRequests = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/admin/products');
+      const data = await response.json();
+      setSellRequests(data);
+    } catch (error) {
+      console.error('Error fetching sell requests:', error);
+    }
   };
 
-  const handleRejectRequest = (requestId) => {
+  const handleApproveRequest = async (request) => {
+    try {
+      // Call the approve product API
+      const response = await fetch('http://localhost:4000/admin/approveProduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ request}),
+      });
+      const data = await response.json();
+      console.log(data);
+      fetchSellRequests();
+    } catch (error) {
+      console.error('Error approving product:', error);
+    }
+  };
 
+  const handleRejectRequest = async (requestId) => {
+    try {
+      const response = await fetch(`http://localhost:4000/admin/deleteProduct/${requestId}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      console.log(data);
+      fetchSellRequests();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
+  const openImageInNewTab = (imageLink) => {
+    window.open(imageLink, "_blank");
   };
 
   return (
@@ -49,13 +77,13 @@ function Admin() {
                 <td>{request.user}</td>
                 <td>{request.title}</td>
                 <td>
-                  <Button variant="dark" className="m-2" size="sm" onClick={window.open(request.imageLink, "_blank")}>
+                  <Button variant="dark" className="m-2" size="sm" onClick={() => openImageInNewTab(request.imageLink)}>
                     View Image
                   </Button>
                 </td>
                 <td>{request.price}</td>
                 <td className="text-center">
-                  <Button variant="success" className="m-2" size="sm" onClick={() => handleApproveRequest(request.id)}>
+                  <Button variant="success" className="m-2" size="sm" onClick={() => handleApproveRequest(request)}>
                     Approve
                   </Button>
                   <Button variant="danger" className="m-2" size="sm" onClick={() => handleRejectRequest(request.id)}>
@@ -66,7 +94,7 @@ function Admin() {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="text-center no-requests">
+              <td colSpan="6" className="text-center no-requests">
                 No current admin requests.
               </td>
             </tr>

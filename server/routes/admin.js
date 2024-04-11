@@ -1,6 +1,6 @@
 var express = require('express');
 const router = express.Router()
-const { Product } = require('../models/product');
+const Product = require('../models/product');
 const Approval = require('../models/approval');
 
 //Get all approve Requests from approvals collection
@@ -18,38 +18,55 @@ router.get('/products', async (req,res) =>{
 );
 
 // approve request, add item into collection products, call delete function to delete from approvals, and create a product with stripe api
-router.post('/approveProduct', async (req, res) => {
-    try {
-      const { productID } = req.body;
-      // Add product to Stripe 
-      await addProductToStripe(req);
-  
-      // Add product to database
-      await Product.create({
-        id: req.body.id, 
-        title: req.body.title, 
-        price: req.body.price,
-        imageLink: req.body.imageLink, 
-      });
-  
-      // Delete from approvals collection 
-      await deleteItemFromApprovals(productID);
-  
-      res.json({ message: 'Product approved and added successfully' });
+router.post('/approveProduct/', async (req, res) => {
+  try {
+    const {_id, productID, priceID, title, price, imageLink } = req.body.request; // Extract other necessary fields from the request body
+    // Add product to Stripe 
+    // await addProductToStripe(req);
+
+    // Add product to database
+    await Product.create({
+      productID,
+      priceID,
+      title,
+      price,
+      imageLink,
+    });
+
+    // // Delete from approvals collection using the ID parameter
+    await deleteItem(_id);
+
+    res.json({ message: 'Product approved and added successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// decline request, call delete function
+router.delete('/deleteProduct/:id', async (req, res) => {
+    try{
+      const { id } = req.params; // Extract the ID from the URL parameters
+
+      await deleteItem(id);
+      res.json({ message: 'Product deleted successfully' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 );
-  
-
-
-// decline request, call delete function
 
 // delete item from collection approvals
-function deleteItem(item){
-
+async function deleteItem(id) {
+  try {
+    await Approval.findByIdAndDelete(id);
+    console.log(`Deleted product with ID ${id} from approvals collection`);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to delete product from approvals collection');
+  }
 }
 
 module.exports = router
