@@ -1,18 +1,26 @@
 const mongoose = require("mongoose");
-const userSchema = mongoose.Schema({
-    name:{
+const approvalSchema = mongoose.Schema({
+    user:{
         type:String,
         required:true
     },
-    email:{
+    productID:{
         type:String,
         required:true
     },
-    password:{
+    priceID:{
         type:String,
         required:true
     },
-    role:{
+    title:{
+        type:String,
+        required:true
+    },
+    price:{
+        type:Number,
+        required:true
+    },
+    imageLink:{
         type:String,
         required:true
     }
@@ -20,9 +28,10 @@ const userSchema = mongoose.Schema({
 {
     timestamps:true
 }
+
 );
 //Mongoose schemas support a timestamps option. If you set timestamps: true, Mongoose will add two properties of type Date to your schema
 
-export const User = mongoose.model('users',userSchema);
+const Approval = mongoose.model('approvals',approvalSchema);
 
-module.exports=User;
+module.exports=Approval;
