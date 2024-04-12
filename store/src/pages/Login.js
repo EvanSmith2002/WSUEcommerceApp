@@ -35,7 +35,8 @@ function LoginPage() {
 
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
         setError(null)
-        user.login({email: email, password: password})
+        user.login(response.data)
+        //console.log(response.data)
         handleNavigation(response)
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes

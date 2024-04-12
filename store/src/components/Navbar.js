@@ -35,10 +35,27 @@ function NavbarComponent() {
 
     const productsCount = cart.items.reduce((sum, product) => sum + product.quantity, 0);
 
+    const handleStoreLink = () => {
+        if (user.user) {
+            const role = user.user.role
+            
+            switch(role) {
+                case 'Buyer':
+                    return '/main'
+                case 'Seller':
+                    return '/seller'
+                default:
+                    return '/admin'
+            }
+        }
+
+        return '/'
+    }
+
     return (
         <>
       <Navbar expand="sm">
-        <Navbar.Brand style={{ color: 'honeydew' }} href={user.user ? '/main' : '/'}>
+        <Navbar.Brand style={{ color: 'honeydew' }} href={handleStoreLink()}>
             WSU E-COMMERCE STORE
         </Navbar.Brand>
         <Navbar.Toggle />
