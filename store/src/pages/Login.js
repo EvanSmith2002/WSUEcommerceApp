@@ -22,7 +22,7 @@ function LoginPage() {
 
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
         setError(null)
-        navigateTo('/'); //redirect to the home page or perform any other actions
+        navigateTo('/main'); //redirect to the home page or perform any other actions
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes
       }

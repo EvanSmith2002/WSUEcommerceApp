@@ -23,8 +23,8 @@ function App() {
         <BrowserRouter>
           <NavbarComponent/>
           <Routes>
-            <Route index element={<Store />} />
-            <Route path="login" element={<LoginPage />} />
+            <Route index element={<LoginPage />} />
+            <Route path="main" element={<Store />} />
             <Route path="signup" element={<SignUpPage />} />
             <Route path="admin" element={<Admin />} />
             <Route path="seller" element={<Seller />} />

@@ -37,29 +37,29 @@ function NavbarComponent() {
     return (
         <>
       <Navbar expand="sm">
-        <Navbar.Brand href="/" style={{ color: 'honeydew' }}>WSU E-COMMERCE STORE</Navbar.Brand>
+        <Navbar.Brand href="/main" style={{ color: 'honeydew' }}>WSU E-COMMERCE STORE</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           {/* Show Cart button on non-admin, non-seller, non-login, non-signup pages */}
-          {(location.pathname !== '/admin' && location.pathname !== '/seller' && location.pathname !== '/login' && location.pathname !== '/signup') && (
+          {(location.pathname !== '/admin' && location.pathname !== '/seller' && location.pathname !== '/' && location.pathname !== '/signup') && (
             <Button className="ml-2" onClick={handleShow}>
               Cart ({productsCount} Items)
             </Button>
           )}
 
           {/* Show "Sign Up" button only on the login page */}
-          {location.pathname === '/login' && (
+          {location.pathname === '/' && (
             <Button variant="primary" className="m-4" onClick={() => navigateTo('/signup')}>Sign Up</Button>
           )}
 
           {/* Show "Log In" button only on the signup page */}
           {location.pathname === '/signup' && (
-            <Button variant="primary" className="m-4" onClick={() => navigateTo('/login')}>Log In</Button>
+            <Button variant="primary" className="m-4" onClick={() => navigateTo('/')}>Log In</Button>
           )}
 
           {/* Show "Log Out" button on all pages except login */}
-          {(location.pathname !== '/login' && location.pathname !== '/signup') && (
-            <Button variant="primary" className="m-4" onClick={() => navigateTo('/login')}>Log Out</Button>
+          {(location.pathname !== '/' && location.pathname !== '/signup') && (
+            <Button variant="primary" className="m-4" onClick={() => navigateTo('/')}>Log Out</Button>
           )}
         </Navbar.Collapse>
       </Navbar>
