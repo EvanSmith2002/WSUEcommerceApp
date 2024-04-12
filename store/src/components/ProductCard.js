@@ -1,5 +1,5 @@
 import { Image, Card, Button, Form, Row, Col } from 'react-bootstrap';
-import { CartContext } from '../CartContext';
+import { CartContext } from '../Contexts/CartContext';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom'; 
 

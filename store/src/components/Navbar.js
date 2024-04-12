@@ -1,15 +1,16 @@
 import { Button, Form, FormControl, Container, Navbar, Modal} from 'react-bootstrap';
 import { useState, useContext } from 'react';
-import {CartContext} from "../CartContext";
+import {CartContext} from "../Contexts/CartContext";
 import CartProduct from './CartProduct';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { UserContext } from '../Contexts/UserContext';
  
 
 
 function NavbarComponent() {
     const cart = useContext(CartContext);
+    const user = useContext(UserContext)
     const location = useLocation();
-
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -37,7 +38,9 @@ function NavbarComponent() {
     return (
         <>
       <Navbar expand="sm">
-        <Navbar.Brand href="/main" style={{ color: 'honeydew' }}>WSU E-COMMERCE STORE</Navbar.Brand>
+        <Navbar.Brand style={{ color: 'honeydew' }} href={user.user ? '/main' : '/'}>
+            WSU E-COMMERCE STORE
+        </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           {/* Show Cart button on non-admin, non-seller, non-login, non-signup pages */}
@@ -59,7 +62,7 @@ function NavbarComponent() {
 
           {/* Show "Log Out" button on all pages except login */}
           {(location.pathname !== '/' && location.pathname !== '/signup') && (
-            <Button variant="primary" className="m-4" onClick={() => navigateTo('/')}>Log Out</Button>
+            <Button variant="primary" className="m-4" onClick={() => {user.logout(); navigateTo('/')}}>Log Out</Button>
           )}
         </Navbar.Collapse>
       </Navbar>

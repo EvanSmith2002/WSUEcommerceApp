@@ -7,7 +7,8 @@ import {BrowserRouter, Routes,Route} from "react-router-dom"
 import Cancel from './pages/Cancel';
 import Store from './pages/Store';
 import Success from './pages/Success';
-import CartProvider from './CartContext';
+import CartProvider from './Contexts/CartContext';
+import { UserProvider } from './Contexts/UserContext';
 import Admin from "./pages/Admin"
 import Seller from './pages/Seller';
 import LoginPage from './pages/Login';
@@ -18,22 +19,29 @@ import SignUpPage from './pages/SignUp';
 
 function App() {
   return (
+    <UserProvider>
     <CartProvider>
       <Container>
+   
         <BrowserRouter>
           <NavbarComponent/>
-          <Routes>
-            <Route index element={<LoginPage />} />
-            <Route path="main" element={<Store />} />
-            <Route path="signup" element={<SignUpPage />} />
-            <Route path="admin" element={<Admin />} />
-            <Route path="seller" element={<Seller />} />
-            <Route path="success" element={<Success />} />
-            <Route path="cancel" element={<Cancel />} />
-          </Routes>
+            <Routes>
+            
+              <Route index element={<LoginPage />} />
+              <Route path="main" element={<Store />} />
+              <Route path="signup" element={<SignUpPage />} />
+              <Route path="admin" element={<Admin />} />
+              <Route path="seller" element={<Seller />} />
+              <Route path="success" element={<Success />} />
+              <Route path="cancel" element={<Cancel />} />
+              
+            </Routes>
         </BrowserRouter>
+        
       </Container>
       </CartProvider>
+      </UserProvider>
+    
   );
 }
 

@@ -1,8 +1,8 @@
 import { Button, Container, Form, Col, Row, FormGroup } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-
+import { UserContext } from '../Contexts/UserContext';
 
 const LOGIN_URL = "http://localhost:4000/login";
 
@@ -12,8 +12,9 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const navigateTo = useNavigate();
   const [error, setError] = useState(null);
+  const user = useContext(UserContext)
 
-  const login = async() => {
+  const handleLogin = async() => {
     try {
       const response = await Axios.post(LOGIN_URL, {
         email,
@@ -22,6 +23,7 @@ function LoginPage() {
 
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
         setError(null)
+        user.login({email: email, password: password})
         navigateTo('/main'); //redirect to the home page or perform any other actions
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes
@@ -39,7 +41,7 @@ function LoginPage() {
     event.preventDefault();
     // Handle sign in logic here (e.g., call an API to authenticate)
     console.log(`Email: ${email}, Password: ${password}`);
-    await login();
+    await handleLogin();
     setEmail(''); // Clear form fields after submission
     setPassword('');
   };
