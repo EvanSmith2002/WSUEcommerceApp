@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const apiRouter = require('./api/api')
 const adminRouter = require('./routes/admin')
 const sellerRouter = require('./routes/seller')
+const loginRouter = require('./routes/login')
+const signUpRouter = require('./routes/signUp')
 const {PORT, mongoDBURL} = require("./config")
 
 const app = express();
@@ -16,6 +18,8 @@ app.use('/', buyerRouter)
 app.use('/api', apiRouter)
 app.use('/admin',adminRouter)
 app.use('/seller',sellerRouter)
+app.use('/login', loginRouter)
+app.use('/signup', signUpRouter)
 
 mongoose.connect(mongoDBURL).then(() =>{
     console.log("Database connected succesfully")

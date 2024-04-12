@@ -28,15 +28,14 @@ function SignUpPage() {
       
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
         console.log(response.data.message); //user successfully created, you can perform any additional actions
-        //usersContext.updateUsers();
         setError(null); //clear any previous errors
-        navigateTo('/login'); //redirect to the homepage
+        navigateTo('/login');
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes
       }
     } catch (error) {
       if (error.response && error.response.status === 400) { //handle errors here
-        setError("Username already exists");
+        setError("Email already exists");
       } else {
         console.error("Error creating user:", error.response ? error.response.data.message : error.message); // Handle other errors
       }
@@ -50,12 +49,11 @@ function SignUpPage() {
     if (password === confirmPassword) {
       // Handle sign-up logic here (e.g., call an API to create a new user)
       console.log(`Name: ${name}, Email: ${email}, Password: ${password}`, `Role: ${role}`);
-      //await createUser()
+      await createUser()
       setName('');
       setEmail('');
       setPassword('');
       setRole('');
-      navigateTo('/login');
     } else {
       setPasswordsMatch(false); // Alert user that passwords don't match
     }
@@ -118,16 +116,16 @@ function SignUpPage() {
             <Form.Select className="form-select text-center" onChange={(e) => setRole(e.target.value)}>
               <option value="Buyer">Buyer</option>
               <option value="Seller">Seller</option>
-              <option value="Admin">Admin</option>
             </Form.Select>
           </Form.Group>
 
 
           <Button className='m-4' variant="primary" onClick={handleSubmit}>Sign Up</Button>
+          {error && <p className="text-red-500 m-2">{error}</p>}
       </Form>
     </Container>
 
-    {error && <p className="text-red-500 mt-2">{error}</p>}
+    
     </>
   );
 }
