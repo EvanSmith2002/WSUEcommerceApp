@@ -14,6 +14,18 @@ function LoginPage() {
   const [error, setError] = useState(null);
   const user = useContext(UserContext)
 
+  const handleNavigation = (res) => {
+    const {role} = res.data
+
+    if (role === 'Buyer') {
+      navigateTo('/main')
+    } else if (role === 'Seller') {
+      navigateTo('/seller')
+    } else {
+      navigateTo('/admin')
+    }
+  }
+
   const handleLogin = async() => {
     try {
       const response = await Axios.post(LOGIN_URL, {
@@ -24,7 +36,7 @@ function LoginPage() {
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
         setError(null)
         user.login({email: email, password: password})
-        navigateTo('/main'); //redirect to the home page or perform any other actions
+        handleNavigation(response)
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes
       }

@@ -29,7 +29,7 @@ function SignUpPage() {
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
         console.log(response.data.message); //user successfully created, you can perform any additional actions
         setError(null); //clear any previous errors
-        navigateTo('/login');
+        navigateTo('/');
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes
       }
