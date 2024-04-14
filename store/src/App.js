@@ -13,6 +13,8 @@ import Admin from "./pages/Admin"
 import Seller from './pages/Seller';
 import LoginPage from './pages/Login';
 import SignUpPage from './pages/SignUp';
+import AccessDenied from './pages/AccessDenied';
+import PrivateRoute from './components/PrivateRoute';
 
 // localhost:3000 -> Home
 // localhost:3000/success -> Success
@@ -28,13 +30,16 @@ function App() {
             <Routes>
             
               <Route index element={<LoginPage />} />
-              <Route path="main" element={<Store />} />
               <Route path="signup" element={<SignUpPage />} />
-              <Route path="admin" element={<Admin />} />
-              <Route path="seller" element={<Seller />} />
+
+              <Route path='main' element={<PrivateRoute requiredRole={'Buyer'} page={<Store />}/>}/>
+              <Route path='admin' element={<PrivateRoute requiredRole={'Admin'} page={<Admin/>}/>}/>
+              <Route path='seller' element={<PrivateRoute requiredRole={'Seller'} page={<Seller/>}/>}/>
+              
+
               <Route path="success" element={<Success />} />
               <Route path="cancel" element={<Cancel />} />
-              
+              <Route path='access-denied' element={<AccessDenied/>}/>
             </Routes>
         </BrowserRouter>
         

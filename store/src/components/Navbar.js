@@ -1,17 +1,17 @@
 import { Button, Form, FormControl, Container, Navbar, Modal} from 'react-bootstrap';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {CartContext} from "../Contexts/CartContext";
 import CartProduct from './CartProduct';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../Contexts/UserContext';
- 
-
+import Axios from 'axios';
 
 function NavbarComponent() {
     const cart = useContext(CartContext);
     const user = useContext(UserContext)
     const location = useLocation();
-
+    
+    const [storeLink, setStoreLink] = useState('/');
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -36,26 +36,48 @@ function NavbarComponent() {
     const productsCount = cart.items.reduce((sum, product) => sum + product.quantity, 0);
 
     const handleStoreLink = () => {
-        if (user.user) {
-            const role = user.user.role
+        try {
+            const role = user.user?.role
             
             switch(role) {
                 case 'Buyer':
+                    setStoreLink('main')
                     return '/main'
                 case 'Seller':
+                    setStoreLink('/seller')
                     return '/seller'
-                default:
+                case 'Admin':
+                    setStoreLink('/admin')
                     return '/admin'
+                default:
+                    setStoreLink('/')
+                    return '/'
             }
-        }
+            
 
-        return '/'
+            
+        } catch (error) {
+            console.error(error)
+            setStoreLink('/')
+            return '/'
+        }
+    }
+
+    const handleStoreLinkNav = () => {
+        handleStoreLink()
+        navigateTo(storeLink)
+    }
+
+    const handleLogout = async () => {
+        user.logout()
+        navigateTo('/')
+        await Axios.get('http://localhost:4000/auth/logout')
     }
 
     return (
         <>
       <Navbar expand="sm">
-        <Navbar.Brand style={{ color: 'honeydew' }} href={handleStoreLink()}>
+        <Navbar.Brand style={{ color: 'honeydew' }} onClick={handleStoreLinkNav}>
             WSU E-COMMERCE STORE
         </Navbar.Brand>
         <Navbar.Toggle />
@@ -79,7 +101,7 @@ function NavbarComponent() {
 
           {/* Show "Log Out" button on all pages except login */}
           {(location.pathname !== '/' && location.pathname !== '/signup') && (
-            <Button variant="primary" className="m-4" onClick={() => {user.logout(); navigateTo('/')}}>Log Out</Button>
+            <Button variant="primary" className="m-4" onClick={handleLogout}>Log Out</Button>
           )}
         </Navbar.Collapse>
       </Navbar>

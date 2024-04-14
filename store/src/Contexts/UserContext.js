@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Axios from 'axios';
 
 export const UserContext = createContext();
 
@@ -7,24 +7,32 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
+    const getUser = async () => {
+        try {
+            const res = await Axios.get('http://localhost:4000/auth/user')
+            const user = res.data
+            setUser(user)
+        } catch (error) {
+            console.error(error)
+            if (error.response && error.response.status === 401) { //handle errors here
+                setUser(null)
+            }
+        }
+    }
+
     // Retrieve user data from local storage on component mount
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
+        getUser()
     }, []);
 
     // Example function to set the user
     function login(userData) {
         setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
     };
 
     // Example function to logout
     function logout() {
         setUser(null);
-        localStorage.removeItem('user');
     };
 
     return (
