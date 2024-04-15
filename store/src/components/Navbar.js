@@ -67,37 +67,13 @@ function NavbarComponent() {
         }
     }, [role])
 
-    const handleStoreLink = async () => {
-        try {
-            switch(role) {
-                case 'Buyer':
-                    setStoreLink('/main')
-                    return '/main'
-                case 'Seller':
-                    setStoreLink('/seller')
-                    return '/seller'
-                case 'Admin':
-                    setStoreLink('/admin')
-                    return '/admin'
-                default:
-                    setStoreLink('/')
-                    return '/'
-            }
-        } catch (error) {
-            console.error(error)
-            setStoreLink('/')
-            return '/'
-        }
-    }
-
     const handleStoreLinkNav = async () => {
-        //await handleStoreLink()
-        //console.log('store link is', storeLink)
         navigateTo(storeLink)
     }
 
     const handleLogout = async () => {
         user.logout()
+        setRole('')
         navigateTo('/')
         console.log('logging out')
         await Axios.get('http://localhost:4000/auth/logout')
