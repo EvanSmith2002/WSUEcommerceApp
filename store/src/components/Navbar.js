@@ -8,7 +8,7 @@ import Axios from 'axios';
 
 function NavbarComponent() {
     const cart = useContext(CartContext);
-    const user = useContext(UserContext)
+    const {user, logout} = useContext(UserContext)
     const location = useLocation();
     
     const [storeLink, setStoreLink] = useState('/');
@@ -38,17 +38,8 @@ function NavbarComponent() {
 
 
     useEffect(() => {
-        const getRole = async () => {
-            try {
-            const res = await Axios.get('http://localhost:4000/auth/user');
-            setRole(res.data.role)
-            } catch (error) {
-                
-            }
-        }
-        console.log('updating navbar role', role)
-        getRole()
-    }, [user.user])
+        setRole(user?.role)
+    }, [user])
 
     useEffect(() => {
         switch(role) {
@@ -72,10 +63,9 @@ function NavbarComponent() {
     }
 
     const handleLogout = async () => {
-        user.logout()
+        logout()
         setRole('')
         navigateTo('/')
-        console.log('logging out')
         await Axios.get('http://localhost:4000/auth/logout')
     }
 

@@ -7,8 +7,8 @@ export const UserContext = createContext({
 
 // User context provider component
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) ?? null);
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true')
 
     const getUser = async () => {
         try {
@@ -24,25 +24,22 @@ export const UserProvider = ({ children }) => {
         console.log('fetching user from db')
     }
 
-    // Retrieve user data from local storage on component mount
-    useEffect(() => {
-        getUser()
-    }, [isLoggedIn]);
-
-    useEffect(() => {
-        console.log('usercontext user', user)
-    }, [user]);
-
     // Example function to set the user
     function login(userData) {
+        console.log('userData', userData)
         setUser(userData);
         setIsLoggedIn(true)
+        console.log('user context user', user)
+        localStorage.setItem('user', JSON.stringify(userData)); // Store the user's data in localStorage
+        localStorage.setItem('isLoggedIn', 'true');
     };
 
     // Example function to logout
     function logout() {
         setUser(null);
         setIsLoggedIn(false)
+        localStorage.removeItem('user');
+        localStorage.removeItem('isLoggedIn');
     };
 
     const contextValue = {
@@ -52,7 +49,11 @@ export const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={contextValue}>
+        <UserContext.Provider value={ {
+            user,
+            login,
+            logout
+        }}>
             {children}
         </UserContext.Provider>
     );
