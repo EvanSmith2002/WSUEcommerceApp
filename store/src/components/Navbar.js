@@ -12,6 +12,7 @@ function NavbarComponent() {
     const location = useLocation();
     
     const [storeLink, setStoreLink] = useState('/');
+    const [role, setRole] = useState('')
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -35,13 +36,42 @@ function NavbarComponent() {
 
     const productsCount = cart.items.reduce((sum, product) => sum + product.quantity, 0);
 
-    const handleStoreLink = () => {
+
+    useEffect(() => {
+        const getRole = async () => {
+            try {
+            const res = await Axios.get('http://localhost:4000/auth/user');
+            setRole(res.data.role)
+            } catch (error) {
+                
+            }
+        }
+        console.log('updating navbar role', role)
+        getRole()
+    }, [user.user])
+
+    useEffect(() => {
+        switch(role) {
+            case 'Buyer':
+                setStoreLink('/main')
+                break;
+            case 'Seller':
+                setStoreLink('/seller')
+                break;
+            case 'Admin':
+                setStoreLink('/admin')
+                break;
+            default:
+                setStoreLink('/')
+                break;
+        }
+    }, [role])
+
+    const handleStoreLink = async () => {
         try {
-            const role = user.user?.role
-            
             switch(role) {
                 case 'Buyer':
-                    setStoreLink('main')
+                    setStoreLink('/main')
                     return '/main'
                 case 'Seller':
                     setStoreLink('/seller')
@@ -53,9 +83,6 @@ function NavbarComponent() {
                     setStoreLink('/')
                     return '/'
             }
-            
-
-            
         } catch (error) {
             console.error(error)
             setStoreLink('/')
@@ -63,14 +90,16 @@ function NavbarComponent() {
         }
     }
 
-    const handleStoreLinkNav = () => {
-        handleStoreLink()
+    const handleStoreLinkNav = async () => {
+        //await handleStoreLink()
+        //console.log('store link is', storeLink)
         navigateTo(storeLink)
     }
 
     const handleLogout = async () => {
         user.logout()
         navigateTo('/')
+        console.log('logging out')
         await Axios.get('http://localhost:4000/auth/logout')
     }
 
