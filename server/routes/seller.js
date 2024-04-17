@@ -40,11 +40,9 @@ router.post('/addProduct/:sellerID', async (req, res) => {
 router.get('/products/:sellerID', async (req, res) => {
   try {
     // Get the seller ID from the request parameter
-    const sellerId = req.params.sellerID;
-
+    const sellerID = req.params.sellerID;
     // Query the collection to find products with matching seller ID
-    const products = await Product.find({ sellerID });
-
+    const products = await Product.find({ user:sellerID });
     // Check if any products found
     if (!products) {
       return res.status(404).json({ message: 'No products found for this seller' });
@@ -63,7 +61,7 @@ router.get('/products/:sellerID', async (req, res) => {
 router.delete('/deleteProduct/:id', async (req, res) => {
   try{
     const { id } = req.params; // Extract the ID from the URL parameters
-
+    console.log(id)
     await deleteItem(id);
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
@@ -76,7 +74,7 @@ router.delete('/deleteProduct/:id', async (req, res) => {
 // delete item from collection approvals
 async function deleteItem(id) {
   try {
-    await Approval.findByIdAndDelete(id);
+    await Product.findByIdAndDelete(id);
     console.log(`Deleted product with ID ${id} from approvals collection`);
   } catch (error) {
     console.error(error);

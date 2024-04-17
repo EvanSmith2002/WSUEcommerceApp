@@ -10,39 +10,46 @@ function Seller() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProductID, setSelectedProductID] = useState(null);
 
+  const fetchProducts = async () => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (!storedUser) {
+        throw new Error('User information not found in localStorage');
+      }
+
+      const user = JSON.parse(storedUser); // Parse the JSON string
+      const sellerID = user.email; // Use email as seller ID
+
+      const response = await fetch(`http://localhost:4000/seller/products/${sellerID}`);
+      const data = await response.json();
+      setDisplayedProducts(data); // Update state with fetched products
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
   // Fetch products on component mount
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:4000/seller/products');
-        const data = await response.json();
-        setDisplayedProducts(data); // Update state with fetched products
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
     fetchProducts(); // Call the function on component mount
   }, []); // Empty dependency array ensures fetch happens only once
 
-  const handleDeleteProduct = async (product, productID) => {
+  const handleDeleteProduct = async (productID) => {
     console.log(productID);
-    const updatedProducts = displayedProducts.filter(product => product.id !== productID);
-    setDisplayedProducts(updatedProducts);
+
     try {
       const response = await fetch(`http://localhost:4000/seller/deleteProduct/${productID}`, {
         method: 'DELETE',
       });
       const data = await response.json();
       console.log(data);
+      fetchProducts(); // Refetch products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);
     }
   };
 
-  const handleEditPrice = (productID) => {
-    setSelectedProductID(productID);
-    setShowModal(true);
+  const handleEditPrice = async (productID, newPrice) => {
+    console.log(productID)
   };
 
   return (
@@ -53,8 +60,10 @@ function Seller() {
           <Col align="center" key={idx}>
             <ProductCard product={product} />
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
-              <DeleteItem onDelete={() => handleDeleteProduct(product, product.id)} />
-              <Button variant="primary" onClick={() => handleEditPrice(product.id)}>Edit Price</Button>
+              <DeleteItem onDelete={() => handleDeleteProduct(product._id)} />
+              <Button variant="primary" onClick={() => setShowModal(true, product._id)}>
+                Edit Price
+              </Button>
             </div>
           </Col>
         ))}
@@ -63,6 +72,7 @@ function Seller() {
       {showModal && (
         <EditPrice
           productID={selectedProductID}
+          onSubmit={handleEditPrice}
           onClose={() => setShowModal(false)}
         />
       )}
