@@ -4,14 +4,6 @@ const approvalSchema = mongoose.Schema({
         type:String,
         required:true
     },
-    productID:{
-        type:String,
-        required:true
-    },
-    priceID:{
-        type:String,
-        required:true
-    },
     title:{
         type:String,
         required:true

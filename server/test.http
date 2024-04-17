@@ -1,0 +1,12 @@
+# POST http://localhost:4000/seller/addProduct/seller@seller.com
+# content-type: application/json
+
+# {
+#     "productID": "prod_PsukWILjmjRySQ",
+#     "priceID": "price_1P38ucP79apvj9gnVgWYvHAB",
+#     "title": "Keychain",
+#     "price": 4.99,
+#     "imageLink":"https://m.media-amazon.com/images/I/51R0Bna8S2L.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+# }
+
+GET http://localhost:4000/seller/products/seller@seller.com
