@@ -1,4 +1,4 @@
-import { Image, Card, Button, Form, Row, Col } from 'react-bootstrap';
+import { Card, Button, Form, Row, Col } from 'react-bootstrap';
 import { CartContext } from '../Contexts/CartContext';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom'; 
@@ -15,7 +15,7 @@ function ProductCard(props) { // props.product is the product we are selling
         <Card style={{ flex:1, backgroundColor:'honeydew'}}>
             <Card.Body>
                 <Card.Title>{product.title}</Card.Title>
-                <Card.Body><img className = "img-thumbnail" src ={product.link}></img></Card.Body>
+                <Card.Body><img style={{ width: '200px', height: '200px' }} className = "img-thumbnail" src ={product.imageLink} alt='product'></img></Card.Body>
                 <Card.Text>${product.price}</Card.Text>                    
                 { productQuantity > 0 ?
                     <>

@@ -20,12 +20,14 @@ router.get('/products', async (req,res) =>{
 // approve request, add item into collection products, call delete function to delete from approvals, and create a product with stripe api
 router.post('/approveProduct/', async (req, res) => {
   try {
-    const {_id, productID, priceID, title, price, imageLink } = req.body.request; // Extract other necessary fields from the request body
+    const {_id, user, title, price, imageLink } = req.body.request; // Extract other necessary fields from the request body
     // Add product to Stripe 
     // await addProductToStripe(req);
-
+    const priceID= "temp"
+    const productID= _id
     // Add product to database
     await Product.create({
+      user,
       productID,
       priceID,
       title,
