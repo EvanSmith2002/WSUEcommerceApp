@@ -29,8 +29,8 @@ function Seller() {
                 {displayedProducts.map((product, idx) => (
                     <Col align="center" key={idx}>
                         <ProductCard product={product} />
-                        <DeleteItem onDelete={() => handleDeleteProduct(product.id)} />
-                        <Button variant="primary" onClick={() => handleEditPrice(product.id)}>Edit Price</Button>
+                        <DeleteItem onDelete={() => handleDeleteProduct(product.id)}/>
+                        <Button variant="primary" onClick={() => handleEditPrice(product.id)} style={{ padding: '8px 16px', marginTop: "4px"}} >Edit Price</Button>
                         
                     </Col>
                 ))}

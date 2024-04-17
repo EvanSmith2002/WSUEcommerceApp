@@ -9,7 +9,7 @@ const DeleteItem = ({ onDelete }) => {
     };
 
     return (
-        <Button variant="secondary" onClick={handleClick}>
+        <Button variant="secondary" onClick={handleClick} style={{ padding: '8px 16px', marginRight: '8px', marginTop: "4px"}}>
             Delete
         </Button>
     );
