@@ -9,7 +9,7 @@ const DeleteItem = ({ onDelete }) => {
     };
 
     return (
-        <Button variant="danger" onClick={handleClick}>
+        <Button variant="secondary" onClick={handleClick}>
             Delete
         </Button>
     );
