@@ -17,7 +17,7 @@ function ProductCard(props) { // props.product is the product we are selling
                 <Card.Title>{product.title}</Card.Title>
                 <Card.Body><img style={{ width: '200px', height: '200px' }} className = "img-thumbnail" src ={product.imageLink} alt='product'></img></Card.Body>
                 <Card.Text>${product.price}</Card.Text>                    
-                { productQuantity > 0 ?
+                { (productQuantity > 0 && location.pathname !== '/seller') ?
                     <>
                         <Form as={Row}>
                             <Form.Label column="true" sm="6">In Cart: {productQuantity}</Form.Label>
