@@ -86,7 +86,7 @@ function Admin() {
                   <Button variant="success" className="m-2" size="sm" onClick={() => handleApproveRequest(request)}>
                     Approve
                   </Button>
-                  <Button variant="danger" className="m-2" size="sm" onClick={() => handleRejectRequest(request.id)}>
+                  <Button variant="danger" className="m-2" size="sm" onClick={() => handleRejectRequest(request._id)}>
                     Reject
                   </Button>
                 </td>

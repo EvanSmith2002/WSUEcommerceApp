@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { productsArray } from '../productStore';
 
-function EditPrice({ productID, onClose }) {
+function EditPrice({ productID, onSubmit, onClose }) {
     const [newPrice, setNewPrice] = useState('');
 
     const handleChange = (event) => {
         setNewPrice(event.target.value);
     };
 
-    const handleSubmit = () => {
 
-        const index = productsArray.findIndex(product => product.id === productID);
-        productsArray[index].price = newPrice;
-        onClose();
+
+    const handleSubmit = () => {
+        // const index = productsArray.findIndex(product => product.id === productID);
+        // productsArray[index].price = newPrice;
+        onSubmit(productID,newPrice)
     };
 
     return (

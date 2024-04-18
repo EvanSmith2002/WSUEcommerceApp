@@ -50,6 +50,7 @@ router.post('/approveProduct/', async (req, res) => {
 router.delete('/deleteProduct/:id', async (req, res) => {
     try{
       const { id } = req.params; // Extract the ID from the URL parameters
+      console.log(id)
 
       await deleteItem(id);
       res.json({ message: 'Product deleted successfully' });

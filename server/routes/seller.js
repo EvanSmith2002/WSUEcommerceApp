@@ -56,6 +56,32 @@ router.get('/products/:sellerID', async (req, res) => {
   }
 });
 
+router.put('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params; // Extract product ID from URL parameter
+    const { price } = req.body; // Extract new price from request body
+
+    // Validate price (optional)
+    if (!price || typeof price !== 'number' || price <= 0) {
+      return res.status(400).json({ error: 'Invalid price value' });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { price },
+      { new: true } // Return the updated product document
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // decline request, call delete function
 router.delete('/deleteProduct/:id', async (req, res) => {
@@ -70,6 +96,8 @@ router.delete('/deleteProduct/:id', async (req, res) => {
   }
 }
 );
+
+
 
 // delete item from collection approvals
 async function deleteItem(id) {

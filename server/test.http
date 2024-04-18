@@ -9,4 +9,11 @@
 #     "imageLink":"https://m.media-amazon.com/images/I/51R0Bna8S2L.__AC_SX300_SY300_QL70_FMwebp_.jpg"
 # }
 
-GET http://localhost:4000/seller/products/seller@seller.com
+# GET http://localhost:4000/seller/products/seller@seller.com
+
+PUT http://localhost:4000/seller/products/6620857e5c32e9c53d95f82d
+content-type: application/json
+
+{
+   "price":10
+}

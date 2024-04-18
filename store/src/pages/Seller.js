@@ -4,6 +4,7 @@ import ProductCard from '../components/ProductCard';
 import EmptyProductCard from '../components/EmptyProduct';
 import EditPrice from '../components/EditPrice';
 import DeleteItem from '../components/DeleteItem';
+import axios from 'axios';
 
 function Seller() {
   const [displayedProducts, setDisplayedProducts] = useState([]); // Use empty array initially
@@ -34,7 +35,6 @@ function Seller() {
   }, []); // Empty dependency array ensures fetch happens only once
 
   const handleDeleteProduct = async (productID) => {
-    console.log(productID);
 
     try {
       const response = await fetch(`http://localhost:4000/seller/deleteProduct/${productID}`, {
@@ -49,9 +49,25 @@ function Seller() {
   };
 
   const handleEditPrice = async (productID, newPrice) => {
-    console.log(productID)
+    try {
+      const newNumb= parseFloat(newPrice);
+      const response = await axios.put(`http://localhost:4000/seller/products/${productID}`, {price:newNumb});
+      const data = await response.data;
+      console.log('Backend response for edit price:', data);
+      fetchProducts();
+    } catch (error) {
+      console.error('Error editing product price:', error);
+    } finally {
+      setShowModal(false);
+    }
   };
 
+
+  const handleShowEditModal = (productID) => {
+    setSelectedProductID(productID); // Set selectedProductID on button click
+    setShowModal(true);
+  };
+  
   return (
     <>
       <h1 align="center" className='p-3' style={{ color: 'honeydew' }}>Welcome to the store!</h1>
@@ -61,7 +77,7 @@ function Seller() {
             <ProductCard product={product} />
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
               <DeleteItem onDelete={() => handleDeleteProduct(product._id)} />
-              <Button variant="primary" onClick={() => setShowModal(true, product._id)}>
+              <Button variant="primary" onClick={() => handleShowEditModal(product._id)}>
                 Edit Price
               </Button>
             </div>
@@ -72,7 +88,7 @@ function Seller() {
       {showModal && (
         <EditPrice
           productID={selectedProductID}
-          onSubmit={handleEditPrice}
+          onSubmit={handleEditPrice} 
           onClose={() => setShowModal(false)}
         />
       )}
