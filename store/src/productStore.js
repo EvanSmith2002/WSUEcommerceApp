@@ -1,7 +1,3 @@
-// Coffee: price_1LnUTFDM1jwCEz8OGoOSXiSM
-// Sunglasses: price_1LnUTxDM1jwCEz8OAqHYTwKQ
-// Camera: price_1LnUUoDM1jwCEz8OvxIcJ7to
-
 const productsArray = [
     {
         productID: 'prod_PsukWILjmjRySQ',
@@ -23,10 +19,40 @@ const productsArray = [
         link:"https://fanatics.frgimages.com/washington-state-cougars/mens-colosseum-crimson-washington-state-cougars-lace-up-30-pullover-hoodie_pi4352000_altimages_ff_4352119-c5442f1025ce5879d76falt1_full.jpg?_hv=2&w=900"
     },
     {
+        title: "White Hoodie",
+        price: 20.99,
+        link: "https://images.footballfanatics.com/washington-state-cougars/mens-champion-h-oat-washington-state-cougars-sp-replen-powerblend-hood_ss10_p-101307724+u-in7aadjtyibqckhjkfpk+v-wdvew6nvhubpjtxm9ukq.jpg?_hv=2&w=340"
+    },
+    {
+        title: "Grey Hoodie",
+        price: 30.99,
+        link: "https://fanatics.frgimages.com/washington-state-cougars/mens-colosseum-heather-gray-washington-state-cougars-arch-and-logo-crew-neck-sweatshirt_pi3129000_ff_3129659c_full.jpg?_hv=2&w=340"
+    },
+    {
         id: "1",
         title: "Hat",
         price: 5.99,
         link:"https://images.footballfanatics.com/washington-state-cougars/mens-new-era-crimson-washington-state-cougars-primary-team-logo-basic-59fifty-fitted-hat_pi4181000_altimages_ff_4181294-4d1ca7ff2446ed42b06aalt2_full.jpg?_hv=2&w=600"
+    },
+    {
+        title: "Grey Hat",
+        price: 10.99,
+        link: "https://images.footballfanatics.com/washington-state-cougars/mens-top-of-the-world-gray-washington-state-cougars-primary-logo-staple-adjustable-hat_pi3146000_altimages_ff_3146944alt1_full.jpg?_hv=2&w=900"
+    },
+    {
+        title:"White Hat",
+        price: 6.99,
+        link: "https://images.footballfanatics.com/washington-state-cougars/mens-new-era-white/crimson-washington-state-cougars-court-sport-foam-a-frame-9forty-adjustable-trucker-hat_ss5_p-200399026+u-dxgbs2yuk8thlztkiv79+v-acjzibsr3x7cc9kivikj.jpg?_hv=2&w=340"
+    },
+    {
+        title:"White Tumbler",
+        price: 40.99,
+        link:"https://images.footballfanatics.com/washington-state-cougars/washington-state-cougars-40oz-rocky-alumni-personalized-tumbler_ss5_p-200822909+u-sr2imsgi0wxdpweviv91+v-eaxdxswyapadljvt5eyc.jpg?_hv=2&w=340"
+    },
+    {
+        title: "Phone case",
+        price: 50.59,
+        link:"https://images.footballfanatics.com/washington-state-cougars/washington-state-cougars-linen-logo-iphone-magnetic-bump-case_ss5_p-201333122+u-rixbp672bhugzbm8nipd+v-g5smsiqqcoxmckjdauqz.jpg?_hv=2&w=340"
     },
     {
         id: "2",
@@ -57,19 +83,10 @@ const productsArray = [
         title: "Mug",
         price: 9.99,
         link:"https://fanatics.frgimages.com/washington-state-cougars/washington-state-cougars-16oz-sculpted-mug_pi4236000_altimages_ff_4236086-9fdf8e2317dc0f1adab3alt1_full.jpg?_hv=2&w=900"
-    }
-    
+    }  
 ];
 
-function getProductData(productID) {
-    let productData = productsArray.find(product => product.productID === productID);
-
-    if (productData === undefined) {
-        console.log("Product data does not exist for ID: " + productID);
-        return undefined;
-    }
-
-    return productData;
-}
-
-export { productsArray, getProductData };
+// 1. add item to strip on approval
+// 2. remove item from stripe on delete product
+// 3. edit price in seller
+// 4. make sure checkout works.
