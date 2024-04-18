@@ -56,6 +56,25 @@ router.get('/products/:sellerID', async (req, res) => {
   }
 });
 
+router.get('/item/:productID', async (req, res) => {
+  try {
+    // Get the seller ID from the request parameter
+    const productID = req.params.productID;
+    // Query the collection to find products with matching seller ID
+    const products = await Product.find({ productID: productID });
+    // Check if any products found
+    if (!products) {
+      return res.status(404).json({ message: 'No products found for this seller' });
+    }
+
+    // Send the products as a response
+    res.json(products);
+  } catch (err) {
+    console.error('Error retrieving items:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.put('/products/:id', async (req, res) => {
   try {
     const { id } = req.params; // Extract product ID from URL parameter

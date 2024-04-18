@@ -45,7 +45,6 @@ function LoginPage() {
         console.error("Error logging in:", error.response ? error.response.data.message : error.message); //handle other errors
       }
     } finally {
-      console.log("Test",response)
       if(response !==null){
       if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)        
         setError(null)

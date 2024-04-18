@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
-import { productsArray, getProductData } from "../productStore";
+import { useEffect } from "react";
+import axios from "axios";
 
 
 export const CartContext = createContext({
@@ -13,6 +14,22 @@ export const CartContext = createContext({
 
 export function CartProvider({children}) {
     const [cartProducts, setCartProducts] = useState([]);
+    const [productsArray,setProductsArray]= useState([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+          try {
+            const response = await axios.get('http://localhost:4000/seller/products'); // Replace with your actual API endpoint
+            const fetchedProducts = response.data;
+            setProductsArray(fetchedProducts);
+          } catch (error) {
+            console.error('Error fetching products:', error);
+          }
+        };
+    
+        fetchProducts(); // Call the function on component mount
+      }, []);
+    
     
     // [ { id: 1 , quantity: 3 }, { id: 2, quantity: 1 } ]
 
@@ -39,6 +56,7 @@ export function CartProvider({children}) {
                     {
                         productID: productID,
                         priceID: product.priceID,
+                        price:product.price,
                         quantity: 1
                     }
                 ]
@@ -88,8 +106,7 @@ export function CartProvider({children}) {
     function getTotalCost() {
         let totalCost = 0;
         cartProducts.map((cartItem) => {
-            const productData = getProductData(cartItem.productID);
-            totalCost += (productData.price * cartItem.quantity);
+            totalCost += (cartItem.price * cartItem.quantity);
         });
         return totalCost;
     }
