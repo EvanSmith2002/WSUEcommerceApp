@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function EditPrice({ productID, onSubmit, onClose }) {
+function EditPrice({ productID,onSubmit, onClose }) {
     const [newPrice, setNewPrice] = useState('');
 
     const handleChange = (event) => {

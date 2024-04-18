@@ -36,16 +36,18 @@ function LoginPage() {
         email,
         password,
       });
-
       
     } catch (error) {
+
       if (error.response && error.response.status === 401) { //handle errors here
         setError("Incorrect login credentials"); //the server returned a 401 status code, indicating incorrect login credentials
       } else {
         console.error("Error logging in:", error.response ? error.response.data.message : error.message); //handle other errors
       }
     } finally {
-      if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)
+      console.log("Test",response)
+      if(response !==null){
+      if (response.status >= 200 && response.status < 300) { //assuming the server returns a success status code (2xx range)        
         setError(null)
         console.log('login response', response.data)
         user.login(response.data)
@@ -53,7 +55,7 @@ function LoginPage() {
         handleNavigation(response)
       } else {
         console.error("Unexpected status code:", response.status); //handle unexpected status codes
-      }
+      }}
     }
   }
 
