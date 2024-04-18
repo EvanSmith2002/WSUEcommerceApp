@@ -48,6 +48,7 @@ export function CartProvider({children}) {
         
         const products = productsArray.filter((product) => product.productID === productID)
         const product = products[0]
+        console.log(product)
 
         if (quantity === 0) { // product is not in cart
             setCartProducts(
@@ -56,7 +57,7 @@ export function CartProvider({children}) {
                     {
                         productID: productID,
                         priceID: product.priceID,
-                        price:product.price,
+                        price: product.price,
                         quantity: 1
                     }
                 ]
@@ -122,7 +123,11 @@ export function CartProvider({children}) {
 
     return (
         <CartContext.Provider value={contextValue}>
-            {children}
+            {productsArray.length === 0 ? (
+                <div>Loading Products...</div>
+            ) : (
+                children 
+            )}
         </CartContext.Provider>
     )
 }
