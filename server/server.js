@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 
 const buyerRouter = require('./routes/buyer')
 const mongoose = require("mongoose");
-const apiRouter = require('./api/api')
+const {stripeRouter} = require('./api/api')
 const adminRouter = require('./routes/admin')
 const sellerRouter = require('./routes/seller')
 const authRouter = require('./routes/auth')
@@ -36,7 +36,7 @@ app.use(session({
   }))
 
 app.use('/', buyerRouter)
-app.use('/api', apiRouter)
+app.use('/stripe', stripeRouter)
 app.use('/admin',adminRouter)
 app.use('/seller',sellerRouter)
 app.use('/auth', authRouter)

@@ -1,12 +1,10 @@
 const SECRET_KEY = require('../config').StripeURL;
 const stripe = require('stripe')(SECRET_KEY);
 var express = require('express');
-const router = express.Router()
+const stripeRouter = express.Router()
 
 // Product price is in cents
-const addProductToStripe = async (req) => {
-    const {productName, productDescription, productPrice} = req.body
-
+const addProductToStripe = async (productName, productDescription, productPrice) => {
     const product = await stripe.products.create({
         name: productName,
         description: productDescription
@@ -16,10 +14,12 @@ const addProductToStripe = async (req) => {
         currency: 'usd',
         unit_amount: productPrice,
         product: product.id
-      });
+    });
+    return [price, product];
 }
 
-router.post("/addItem", async (req, res) => {
+
+stripeRouter.post("/addItem", async (req, res) => {
     try {
     await addProductToStripe(req)
     // Add product to database as well
@@ -64,7 +64,7 @@ const archiveInStripe = async (productID) => {
     console.log(product)
 }
 
-router.delete("/deleteItem", async (req, res) => {
+stripeRouter.delete("/deleteItem", async (req, res) => {
     try {
         const {productID} = req.body
         await archiveInStripe(productID)
@@ -77,7 +77,7 @@ router.delete("/deleteItem", async (req, res) => {
 })
 
 // https://docs.stripe.com/api/products/update
-router.put("/updateItem", async (req, res) => {
+stripeRouter.put("/updateItem", async (req, res) => {
     try {
         const {productID, parameters} = req.body
         updateProduct(productID, parameters)
@@ -89,4 +89,8 @@ router.put("/updateItem", async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = {
+    stripeRouter,
+    addProductToStripe,
+    archiveInStripe
+};

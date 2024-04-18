@@ -2,6 +2,7 @@ var express = require('express');
 const router = express.Router()
 const Product  = require('../models/product');
 const Approval = require('../models/approval');
+const {archiveInStripe} =require('../api/api')
 
 //Get all approve Requests from approvals collection
 router.get('/products', async (req,res) =>{
@@ -106,8 +107,8 @@ router.put('/products/:id', async (req, res) => {
 router.delete('/deleteProduct/:id', async (req, res) => {
   try{
     const { id } = req.params; // Extract the ID from the URL parameters
-    console.log(id)
-    await deleteItem(id);
+    const { productID } = req.body;
+    await deleteItem(id,productID);
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error(error);
@@ -116,12 +117,12 @@ router.delete('/deleteProduct/:id', async (req, res) => {
 }
 );
 
-
-
 // delete item from collection approvals
-async function deleteItem(id) {
+async function deleteItem(id,productID) {
   try {
+    await archiveInStripe(productID)
     await Product.findByIdAndDelete(id);
+    
     console.log(`Deleted product with ID ${id} from approvals collection`);
   } catch (error) {
     console.error(error);

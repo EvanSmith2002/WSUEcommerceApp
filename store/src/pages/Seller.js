@@ -34,11 +34,15 @@ function Seller() {
     fetchProducts(); // Call the function on component mount
   }, []); // Empty dependency array ensures fetch happens only once
 
-  const handleDeleteProduct = async (productID) => {
+  const handleDeleteProduct = async (productID,id) => {
 
     try {
-      const response = await fetch(`http://localhost:4000/seller/deleteProduct/${productID}`, {
+      const response = await fetch(`http://localhost:4000/seller/deleteProduct/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json' // Specify content type
+        },
+        body: JSON.stringify({ productID: productID }) // Pass product ID in JSON format
       });
       const data = await response.json();
       console.log(data);
@@ -76,7 +80,7 @@ function Seller() {
           <Col align="center" key={idx}>
             <ProductCard product={product} />
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
-              <DeleteItem onDelete={() => handleDeleteProduct(product._id)} />
+              <DeleteItem onDelete={() => handleDeleteProduct(product.productID,product._id)} />
               <Button variant="primary" onClick={() => handleShowEditModal(product._id)}>
                 Edit Price
               </Button>

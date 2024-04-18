@@ -2,6 +2,7 @@ var express = require('express');
 const router = express.Router()
 const Product = require('../models/product');
 const Approval = require('../models/approval');
+const {addProductToStripe} = require('../api/api')
 
 //Get all approve Requests from approvals collection
 router.get('/products', async (req,res) =>{
@@ -22,14 +23,13 @@ router.post('/approveProduct/', async (req, res) => {
   try {
     const {_id, user, title, price, imageLink } = req.body.request; // Extract other necessary fields from the request body
     // Add product to Stripe 
-    // await addProductToStripe(req);
-    const priceID= "temp"
-    const productID= _id
+    const [priceID, productID] = await addProductToStripe(title, "Product: "+title , price*100);
+
     // Add product to database
     await Product.create({
       user,
-      productID,
-      priceID,
+      productID: productID.id,
+      priceID: priceID.id,
       title,
       price,
       imageLink,
