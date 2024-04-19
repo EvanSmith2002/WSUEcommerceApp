@@ -2,7 +2,7 @@ var express = require('express');
 const router = express.Router()
 const Product  = require('../models/product');
 const Approval = require('../models/approval');
-const {archiveInStripe} =require('../api/api')
+const {archiveProductStripe, updatePriceStripe} =require('../api/api')
 
 //Get all approve Requests from approvals collection
 router.get('/products', async (req,res) =>{
@@ -86,9 +86,17 @@ router.put('/products/:id', async (req, res) => {
       return res.status(400).json({ error: 'Invalid price value' });
     }
 
+    console.log('price', typeof String(price) === 'string')
+    console.log('productID', id)
+    const products = await Product.find({ _id: id });
+    const product = products[0]
+    console.log('product', product)
+    const priceID = await updatePriceStripe(String(price * 100), String(product.productID), String(product.priceID))
+    console.log('newPriceID', priceID)
+    
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
-      { price },
+      { price, priceID },
       { new: true } // Return the updated product document
     );
 
@@ -120,7 +128,7 @@ router.delete('/deleteProduct/:id', async (req, res) => {
 // delete item from collection approvals
 async function deleteItem(id,productID) {
   try {
-    await archiveInStripe(productID)
+    await archiveProductStripe(productID)
     await Product.findByIdAndDelete(id);
     
     console.log(`Deleted product with ID ${id} from approvals collection`);

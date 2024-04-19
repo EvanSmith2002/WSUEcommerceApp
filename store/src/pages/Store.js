@@ -21,9 +21,9 @@ function Store() {
     };
 
     fetchProducts(); // Call the function on component mount
-  }, []);
+  }, [products]);
 
-  const filteredProducts = products.filter((product) =>
+  let filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

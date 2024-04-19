@@ -16,17 +16,17 @@ export function CartProvider({children}) {
     const [cartProducts, setCartProducts] = useState([]);
     const [productsArray,setProductsArray]= useState([]);
 
+    const fetchProducts = async () => {
+        try {
+          const response = await axios.get('http://localhost:4000/seller/products'); // Replace with your actual API endpoint
+          const fetchedProducts = response.data;
+          setProductsArray(fetchedProducts);
+        } catch (error) {
+          console.error('Error fetching products:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchProducts = async () => {
-          try {
-            const response = await axios.get('http://localhost:4000/seller/products'); // Replace with your actual API endpoint
-            const fetchedProducts = response.data;
-            setProductsArray(fetchedProducts);
-          } catch (error) {
-            console.error('Error fetching products:', error);
-          }
-        };
-    
         fetchProducts(); // Call the function on component mount
       }, []);
     
@@ -78,7 +78,7 @@ export function CartProvider({children}) {
     function removeOneFromCart(productID) {
         const quantity = getProductQuantity(productID);
 
-        if(quantity == 1) {
+        if(quantity === 1) {
             deleteFromCart(productID);
         } else {
             setCartProducts(
@@ -99,7 +99,7 @@ export function CartProvider({children}) {
         setCartProducts(
             cartProducts =>
             cartProducts.filter(currentProduct => {
-                return currentProduct.productID != productID;
+                return currentProduct.productID !== productID;
             })  
         )
     }
@@ -114,6 +114,7 @@ export function CartProvider({children}) {
 
     const contextValue = {
         items: cartProducts,
+        fetchProducts,
         getProductQuantity,
         addOneToCart,
         removeOneFromCart,

@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import ProductCard from '../components/ProductCard';
 import EmptyProductCard from '../components/EmptyProduct';
 import EditPrice from '../components/EditPrice';
 import DeleteItem from '../components/DeleteItem';
 import axios from 'axios';
+import { CartContext } from '../Contexts/CartContext';
 
 function Seller() {
   const [displayedProducts, setDisplayedProducts] = useState([]); // Use empty array initially
   const [showModal, setShowModal] = useState(false);
   const [selectedProductID, setSelectedProductID] = useState(null);
+  const [updatedRes, setUpdatedRes] = useState(null)
+  const cart = useContext(CartContext)
 
   const fetchProducts = async () => {
     try {
@@ -29,10 +32,11 @@ function Seller() {
     }
   };
 
-  // Fetch products on component mount
+  // Fetch products on component mount and when an item is updated
   useEffect(() => {
-    fetchProducts(); // Call the function on component mount
-  }, []); // Empty dependency array ensures fetch happens only once
+    fetchProducts(); // Update products for sellers page
+    cart.fetchProducts() // Update store products
+  }, [updatedRes]);
 
   const handleDeleteProduct = async (productID,id) => {
 
@@ -46,7 +50,8 @@ function Seller() {
       });
       const data = await response.json();
       console.log(data);
-      fetchProducts(); // Refetch products after deletion
+      setUpdatedRes(data)
+      //fetchProducts(); // Refetch products after deletion
     } catch (error) {
       console.error('Error deleting product:', error);
     }
@@ -58,7 +63,8 @@ function Seller() {
       const response = await axios.put(`http://localhost:4000/seller/products/${productID}`, {price:newNumb});
       const data = await response.data;
       console.log('Backend response for edit price:', data);
-      fetchProducts();
+      //fetchProducts();
+      setUpdatedRes(data)
     } catch (error) {
       console.error('Error editing product price:', error);
     } finally {

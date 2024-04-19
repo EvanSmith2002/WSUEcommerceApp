@@ -3,6 +3,16 @@ const stripe = require('stripe')(SECRET_KEY);
 var express = require('express');
 const stripeRouter = express.Router()
 
+// Create a price with productPrice for a product
+const createPrice = async (productPrice, productID) => {
+    const price = await stripe.prices.create({
+        currency: 'usd',
+        unit_amount: productPrice,
+        product: productID
+    });
+    return price
+}
+
 // Product price is in cents
 const addProductToStripe = async (productName, productDescription, productPrice) => {
     const product = await stripe.products.create({
@@ -10,11 +20,8 @@ const addProductToStripe = async (productName, productDescription, productPrice)
         description: productDescription
     });
 
-    const price = await stripe.prices.create({
-        currency: 'usd',
-        unit_amount: productPrice,
-        product: product.id
-    });
+    const price = await createPrice(productPrice, product.id)
+
     return [price, product];
 }
 
@@ -42,7 +49,7 @@ const updateProduct = async (productID, parameters) => {
     return product
 }
 
-const archiveInStripe = async (productID) => {
+const archiveProductStripe = async (productID) => {
      // Archive all prices associated with product
      const prices = await stripe.prices.list({
         product: productID,
@@ -67,7 +74,7 @@ const archiveInStripe = async (productID) => {
 stripeRouter.delete("/deleteItem", async (req, res) => {
     try {
         const {productID} = req.body
-        await archiveInStripe(productID)
+        await archiveProductStripe(productID)
         // Delete in database
         res.status(200)
     } catch (error) {
@@ -75,6 +82,22 @@ stripeRouter.delete("/deleteItem", async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
+
+const archivePriceStripe = async (priceID) => {
+    const price = await stripe.prices.update(
+        priceID,
+        {
+            active: false,   
+        }
+    );
+}
+
+// Return the priceID of the new price
+const updatePriceStripe = async (productPrice, productID, priceID) => {
+    await archivePriceStripe(priceID)
+    const price = await createPrice(productPrice, productID)
+    return price.id
+}
 
 // https://docs.stripe.com/api/products/update
 stripeRouter.put("/updateItem", async (req, res) => {
@@ -92,5 +115,6 @@ stripeRouter.put("/updateItem", async (req, res) => {
 module.exports = {
     stripeRouter,
     addProductToStripe,
-    archiveInStripe
+    archiveProductStripe,
+    updatePriceStripe
 };
