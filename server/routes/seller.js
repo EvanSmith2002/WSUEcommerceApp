@@ -86,13 +86,10 @@ router.put('/products/:id', async (req, res) => {
       return res.status(400).json({ error: 'Invalid price value' });
     }
 
-    console.log('price', typeof String(price) === 'string')
-    console.log('productID', id)
     const products = await Product.find({ _id: id });
     const product = products[0]
-    console.log('product', product)
     const priceID = await updatePriceStripe(String(price * 100), String(product.productID), String(product.priceID))
-    console.log('newPriceID', priceID)
+    
     
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
