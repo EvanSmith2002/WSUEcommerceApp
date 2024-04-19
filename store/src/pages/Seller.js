@@ -36,7 +36,7 @@ function Seller() {
   useEffect(() => {
     fetchProducts(); // Update products for sellers page
     cart.fetchProducts() // Update store products
-  }, [updatedRes]);
+  }, [cart, updatedRes]);
 
   const handleDeleteProduct = async (productID,id) => {
 
