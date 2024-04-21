@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { CartContext } from '../Contexts/CartContext';
 
 function Admin() {
   const [sellRequests, setSellRequests] = useState([]);
+  const cart = useContext(CartContext)
 
   useEffect(() => {
     fetchSellRequests();
@@ -15,6 +17,7 @@ function Admin() {
       const response = await fetch('http://localhost:4000/admin/products');
       const data = await response.json();
       setSellRequests(data);
+      cart.fetchProducts();
     } catch (error) {
       console.error('Error fetching sell requests:', error);
     }
